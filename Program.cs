@@ -36,7 +36,8 @@ namespace AngularProjectAPI
 
             builder.Services.AddDbContext<UpMeetDBContext>(options =>
             {                                                    // MAKE SURE Database = the NAME OF YOUR DATABASE
-                options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=UpMeetDB;Trusted_Connection=True;MultipleActiveResultSets=true;");
+                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(connectionString);
             });
 
             var app = builder.Build();
