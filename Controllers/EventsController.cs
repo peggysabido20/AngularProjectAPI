@@ -21,7 +21,26 @@ namespace AngularProjectAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            /*
             var response = _upMeetDBContext.Events.ToList();
+            return Ok(response);
+            */
+
+            var favoritos = _upMeetDBContext.Favorites.ToList();
+            var eventos = _upMeetDBContext.Events.ToList();
+            List<EventsGet> response = new List<EventsGet>();
+
+            foreach (Events evento in eventos)
+            {
+                List<Favorites> favorito = favoritos.Where(l => l.Id == evento.Id).ToList();
+                Boolean isFavorite = false;
+                if (favorito.Count() != 0)
+                {
+                    isFavorite = true;
+                }
+
+                response.Add(new EventsGet() { Id = evento.Id, Name = evento.Name, Description = evento.Description, StartDate = evento.StartDate, Location = evento.Location, Duration = evento.Duration, IsFavorite = isFavorite });
+            }
             return Ok(response);
         }
 
